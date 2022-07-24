@@ -44,8 +44,10 @@ function getComposition(/* f, g */) {
  *   power05(16) => 4
  *
  */
-function getPowerFunction(/* exponent */) {
-  throw new Error('Not implemented');
+function getPowerFunction(exponent) {
+  return function rememberFirstArg(b) {
+    return b ** exponent;
+  };
 }
 
 
@@ -81,9 +83,18 @@ function getPolynom() {
  *   ...
  *   memoizer() => the same random number  (next run, returns the previous cached result)
  */
-function memoize(/* func */) {
-  throw new Error('Not implemented');
-}
+const memoize = (fn) => {
+  const cache = {};
+  return (...args) => {
+    const n = args[0];
+    if (n in cache) {
+      return cache[n];
+    }
+    const result = fn(n);
+    cache[n] = result;
+    return result;
+  };
+};
 
 
 /**
@@ -147,8 +158,18 @@ function logger(/* func, logFunc */) {
  *   partialUsingArguments(fn, 'a','b','c')('d') => 'abcd'
  *   partialUsingArguments(fn, 'a','b','c','d')() => 'abcd'
  */
-function partialUsingArguments(/* fn, ...args1 */) {
-  throw new Error('Not implemented');
+function partialUsingArguments(func, ...args1) {
+  return function curried(...args) {
+    if (args.length >= func.length) {
+      func.apply(this, args.concat(args1));
+      return func();
+    }
+
+    return function continueCurrying(...args2) {
+      curried.apply(this, args.concat(args2, args1));
+      return func();
+    };
+  };
 }
 
 

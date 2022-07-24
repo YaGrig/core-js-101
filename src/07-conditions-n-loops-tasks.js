@@ -27,8 +27,18 @@
  *  21 => 'Fizz'
  *
  */
-function getFizzBuzz(/* num */) {
-  throw new Error('Not implemented');
+function getFizzBuzz(num) {
+  if (num % 3 === 0 && num % 5 === 0) {
+    return 'FizzBuzz';
+  }
+  if (num % 3 === 0) {
+    return 'Fizz';
+  }
+  if (num % 5 === 0) {
+    return 'Buzz';
+  }
+
+  return num;
 }
 
 
@@ -43,8 +53,8 @@ function getFizzBuzz(/* num */) {
  *   5  => 120
  *   10 => 3628800
  */
-function getFactorial(/* n */) {
-  throw new Error('Not implemented');
+function getFactorial(n) {
+  return (n !== 1) ? n * getFactorial(n - 1) : 1;
 }
 
 
@@ -60,8 +70,12 @@ function getFactorial(/* n */) {
  *   5,10  =>  45 ( = 5+6+7+8+9+10 )
  *   -1,1  =>  0  ( = -1 + 0 + 1 )
  */
-function getSumBetweenNumbers(/* n1, n2 */) {
-  throw new Error('Not implemented');
+function getSumBetweenNumbers(n1, n2) {
+  let result = n1;
+  for (let i = n1 + 1; i <= n2; i += 1) {
+    result += i;
+  }
+  return result;
 }
 
 
@@ -208,8 +222,8 @@ function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
  * 'rotator' => 'rotator'
  * 'noon' => 'noon'
  */
-function reverseString(/* str */) {
-  throw new Error('Not implemented');
+function reverseString(str) {
+  return str.split('').reverse().join('');
 }
 
 
@@ -225,8 +239,8 @@ function reverseString(/* str */) {
  *   87354 => 45378
  *   34143 => 34143
  */
-function reverseInteger(/* num */) {
-  throw new Error('Not implemented');
+function reverseInteger(num) {
+  return num.toString().split('').reverse().join('');
 }
 
 
@@ -336,8 +350,26 @@ function toNaryString(/* num, n */) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/verbalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(pathes) {
+  const obj = {};
+  const array = pathes.map((item) => item.split('/').join(',')).join('').split(',');
+  for (let i = 0; i < array.length; i += 1) {
+    if (!obj[array[i]]) {
+      obj[array[i]] = 1;
+    } else {
+      obj[array[i]] += 1;
+    }
+  }
+  const entriesArray = Object.entries(obj).filter((item) => item[1] === pathes.length);
+  const result = entriesArray.map((item) => item[0]).join('/');
+  const check = pathes.filter((item) => item[0] === '/');
+  if (result) {
+    return `/${result}/`;
+  }
+  if (check.length === pathes.length) {
+    return '/';
+  }
+  return '';
 }
 
 
@@ -359,10 +391,11 @@ function getCommonDirectoryPath(/* pathes */) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+function getMatrixProduct(m1, m2) {
+  const result = new Array(m1.length).fill(0).map(() => new Array(m2[0].length).fill(0));
+  return result.map((row, i) => row.map((val, j) => m1[i]
+    .reduce((sum, elm, k) => sum + (elm * m2[k][j]), 0)));
 }
-
 
 /**
  * Returns the evaluation of the specified tic-tac-toe position.
@@ -394,8 +427,36 @@ function getMatrixProduct(/* m1, m2 */) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(position) {
+  let result = [];
+  let diag = [];
+  function check(array) {
+    return (array[0] === array[1] && array[1] === array[2]);
+  }
+  for (let i = 0; i < position.length; i += 1) {
+    position[i].map((item) => result.push(item));
+    diag.push(position[i][i]);
+    if (check(result)) {
+      return result[0];
+    }
+    if (check(diag)) {
+      return diag[0];
+    }
+    diag = [];
+    result = [];
+
+    for (let u = 0; u < position[i].length; u += 1) {
+      result.push(position[u][i]);
+
+      if (u + 1 === position[i].length) {
+        if (check(result)) {
+          return result[0];
+        }
+        result = [];
+      }
+    }
+  }
+  return position;
 }
 
 
