@@ -162,8 +162,10 @@ function doRectanglesOverlap(/* rect1, rect2 */) {
  *   { center: { x:0, y:0 }, radius:10 },  { x:10, y:10 }   => false
  *
  */
-function isInsideCircle(/* circle, point */) {
-  throw new Error('Not implemented');
+function isInsideCircle(circle, point) {
+  const points = ((point.x - circle.center.x) ** 2) + ((point.y - circle.center.y) ** 2);
+  const rad = circle.radius ** 2;
+  return points < rad;
 }
 
 
@@ -294,23 +296,29 @@ function reverseInteger(num) {
  *   4916123456789012 => false
  */
 function isCreditCardNumber(ccn) {
-  const string = ccn.toString();
-  // const lastdigit = string.substr(-1);
-  let digits = string.substring(0, string.length).split('');
-  console.log(digits, digits.length);
-  digits = digits.map((item, index) => {
-    if (index % 2 !== 0) {
-      const itemA = (+item * 2).toString();
-      if (itemA.length === 2) {
-        return +itemA[0] + +itemA[1];
-      } if (itemA.length !== 2) { return +itemA; }
-    }
-    return +item;
-  });
-  console.log(digits);
-  digits = digits.reduce((a, b) => +a + +b);
-  console.log(digits);
-  return digits % 10 === 0;
+  const lastNumber = Number(String(ccn).slice(-1));
+
+  const digitSum = String(ccn)
+    .slice(0, -1)
+    .split('')
+    .reverse()
+    .reduce((acc, item, index) => {
+      const itemNum = Number(item);
+      if (index % 2 === 0) {
+        const newItemNum = itemNum * 2;
+
+        return newItemNum < 10
+          ? acc + newItemNum
+          : acc + Math.floor(newItemNum / 10) + (newItemNum % 10);
+      }
+      return acc + itemNum;
+    }, 0);
+
+  const checkDigit = 10 - (Math.abs(digitSum) % 10);
+
+  return checkDigit < 10
+    ? checkDigit === lastNumber
+    : checkDigit % 10 === lastNumber;
 }
 /**
  * Returns the digital root of integer:
@@ -362,44 +370,43 @@ function getDigitalRoot(number) {
  *   '{[(<{[]}>)]}' = true
  */
 
-function isBracketsBalanced(expr) {
-  const stack = [];
+function isBracketsBalanced(str) {
+  const brackets = {
+    '[': ']',
+    '(': ')',
+    '{': '}',
+    '<': '>',
+  };
 
-  for (let i = 0; i < expr.length; i += 1) {
-    const x = expr[i];
+  const startBrackets = Object.keys(brackets);
+  const endBrackets = Object.values(brackets);
 
-    if (x === '(' || x === '[' || x === '{' || x === '<') {
-      stack.push(x);
+  let stack = '';
+  const arr = str.split('');
+
+  for (let i = 0; i < arr.length; i += 1) {
+    const currentItem = arr[i];
+
+
+    if (startBrackets.includes(currentItem)) {
+      stack += currentItem;
     }
-    if (stack.length === 0) { return false; }
 
-    let check;
-    switch (x) {
-      case ')':
-        check = stack.pop();
-        if (check === '{' || check === '[' || check === '<') { return false; }
-        break;
+    if (endBrackets.includes(currentItem)) {
+      const lastItem = stack[stack.length - 1];
 
-      case '}':
-        check = stack.pop();
-        if (check === '(' || check === '[' || check === '<') { return false; }
-        break;
 
-      case ']':
-        check = stack.pop();
-        if (check === '(' || check === '{' || check === '<') { return false; }
-        break;
-      case '>':
-        check = stack.pop();
-        if (check === '(' || check === '{' || check === '[') { return false; }
-        break;
-      default:
-        return false;
+      if (!!brackets[lastItem] && brackets[lastItem] === currentItem) {
+        stack = stack.slice(0, stack.length - 1);
+      } else {
+        stack += currentItem;
+      }
     }
   }
-  return (stack.length === 0);
-}
 
+
+  return !stack;
+}
 
 /**
  * Returns the string with n-ary (binary, ternary, etc, where n <= 10)

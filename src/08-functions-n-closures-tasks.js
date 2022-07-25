@@ -75,7 +75,25 @@ function getPolynom() {
     return res;
   };
 }
+// function getPolynom(...args) {
+//   // if (args.length === 0) {
+//   //   return null;
+//   // }
 
+//   // if (args.length === 0) {
+//   // }
+
+//   switch (args.length) {
+//     case 1:
+//       return args[0];
+//     case 2:
+//       const [a, b] = args;
+//       return (x) => x * a - b;
+
+//     default:
+//       return null;
+//   }
+// }
 
 /**
  * Memoizes passed function and returns function
@@ -209,10 +227,14 @@ function partialUsingArguments(func, ...args1) {
  *   getId4() => 7
  *   getId10() => 11
  */
-function getIdGeneratorFunction(/* startFrom */) {
-  throw new Error('Not implemented');
+function getIdGeneratorFunction(startFrom) {
+  let count = 0;
+  return function sum() {
+    const result = startFrom + count;
+    count += 1;
+    return result;
+  };
 }
-
 
 module.exports = {
   getComposition,
