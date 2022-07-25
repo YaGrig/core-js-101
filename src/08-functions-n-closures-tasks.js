@@ -24,15 +24,10 @@
  *
  */
 function getComposition(f, g) {
-  function func(x) {
-    return g(x);
-  }
-  function funca(x) {
-    return f(x);
-  }
-  return funca(func);
+  return function getArg(x) {
+    return f(g(x));
+  };
 }
-
 
 /**
  * Returns the math power function with the specified exponent
@@ -184,14 +179,14 @@ function logger(/* func, logFunc */) {
  */
 function partialUsingArguments(func, ...args1) {
   return function curried(...args) {
-    if (args.length >= func.length) {
-      func.apply(this, args.concat(args1));
-      return func();
+    console.log(args, func.length, args.length + args1.length, func, args.length);
+    if (args.length + args1.length >= func.length) {
+      return func.apply(this, args1.concat(args));
     }
 
     return function continueCurrying(...args2) {
-      curried.apply(this, args.concat(args2, args1));
-      return func();
+      console.log(args2);
+      return curried.apply(this, args.concat(args2));
     };
   };
 }

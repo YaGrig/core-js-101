@@ -51,26 +51,21 @@
 //     });
 //   }
 // }
-function isCreditCardNumber(ccn) {
-  const string = ccn.toString();
-  // const lastdigit = string.substr(-1);
-  let digits = string.substring(0, string.length).split('');
-  console.log(digits, digits.length);
-  digits = digits.map((item, index) => {
-    if (index % 2 !== 0) {
-      const itemA = (+item * 2).toString();
-      if (itemA.length === 2) {
-        return +itemA[0] + +itemA[1];
-      } if (itemA.length !== 2) { return +itemA; }
+function partialUsingArguments(func, ...args1) {
+  return function curried(...args) {
+    console.log(args, func.length, args.length + args1.length, func, args.length);
+    if (args.length + args1.length >= func.length) {
+      return func.apply(this, args1.concat(args));
     }
-    return +item;
-  });
-  console.log(digits);
-  digits = digits.reduce((a, b) => +a + +b);
-  console.log(digits);
-  return digits % 10 === 0;
+
+    return function continueCurrying(...args2) {
+      console.log(args2);
+      return curried.apply(this, args.concat(args2));
+    };
+  };
 }
-console.log(isCreditCardNumber(4012888888881881));
+const fn = (x1, x2, x3, x4) => x1 + x2 + x3 + x4;
+console.log(partialUsingArguments(fn, 'a')('b', 'c')('d'));
 
 // function checkLuhn(cnn) {
 //   const nDigits = cnn.length;
