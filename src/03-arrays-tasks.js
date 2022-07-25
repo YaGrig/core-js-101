@@ -478,16 +478,11 @@ function sortCitiesArray(arr) {
  *           [0,0,0,0,1]]
  */
 function getIdentityMatrix(n) {
-  const arr = Array(n).fill().map(() => Array(n).fill(0).map);
-  arr.map((item) => item.map((number, index) => {
-    if (index === arr[item]) {
-      return 1;
-    }
-    return 0;
-  }));
-  for (let i = 0; i < arr.length; i += 1) {
-    arr[i][i] = 1;
-  }
+  const arr = Array(n).fill().map((item, index) => {
+    const array = Array(n).fill(0);
+    array[index] = 1;
+    return array;
+  });
   return arr;
 }
 
@@ -505,11 +500,7 @@ function getIdentityMatrix(n) {
  *     3, 3   => [ 3 ]
  */
 function getIntervalArray(start, end) {
-  const result = [];
-  for (let i = start; i <= end; i += 1) {
-    result.push(i);
-  }
-  return result;
+  return Array(...Array(end - start + 1)).map((i, j) => j + start);
 }
 
 /**
@@ -596,16 +587,19 @@ function selectMany(arr, childrenSelector) {
  */
 function getElementByIndexes(arr, indexes) {
   let result;
-  for (let i = 0; i < indexes.length; i += 1) {
-    if (result === undefined) {
-      result = arr[indexes[i]];
-    } else {
-      result = result[indexes[i]];
-    }
-    if (i === indexes.length - 1) {
-      return result;
-    }
-  }
+  // for (let i = 0; i < indexes.length; i += 1) {
+  //   if (result === undefined) {
+  //     result = arr[indexes[i]];
+  //   } else {
+  //     result = result[indexes[i]];
+  //   }
+  //   if (i === indexes.length - 1) {
+  //     return result;
+  //   }
+  // }
+  indexes.map(item => {
+    result = arr[item]
+  })
   return undefined;
 }
 
