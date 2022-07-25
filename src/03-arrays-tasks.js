@@ -550,10 +550,12 @@ function distinct(arr) {
  *    "Poland" => ["Lodz"]
  *   }
  */
-function group(array, keySelector, valueSelector) {
-  return (array, keySelector, valueSelector);
+function group(/* array, keySelector, valueSelector */) {
+//   const set = new Set();
+//   array.map(() => set.add(keySelector));
+//   console.log(Array.from(set));
+// }
 }
-
 
 /**
  * Projects each element of the specified array to a sequence
@@ -586,21 +588,12 @@ function selectMany(arr, childrenSelector) {
  *   [[[ 1, 2, 3]]], [ 0, 0, 1 ]      => 2        (arr[0][0][1])
  */
 function getElementByIndexes(arr, indexes) {
-  let result;
-  // for (let i = 0; i < indexes.length; i += 1) {
-  //   if (result === undefined) {
-  //     result = arr[indexes[i]];
-  //   } else {
-  //     result = result[indexes[i]];
-  //   }
-  //   if (i === indexes.length - 1) {
-  //     return result;
-  //   }
-  // }
-  indexes.map(item => {
-    result = arr[item]
-  })
-  return undefined;
+  let result = arr.slice(0);
+  indexes.map((item) => {
+    result = result[item];
+    return item;
+  });
+  return result;
 }
 
 
