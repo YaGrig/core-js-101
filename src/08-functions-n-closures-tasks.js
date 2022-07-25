@@ -178,7 +178,7 @@ function logger(/* func, logFunc */) {
  *   partialUsingArguments(fn, 'a','b','c','d')() => 'abcd'
  */
 function partialUsingArguments(func, ...args1) {
-  return function curried(...args) {
+  return function currieds(...args) {
     console.log(args, func.length, args.length + args1.length, func, args.length);
     if (args.length + args1.length >= func.length) {
       return func.apply(this, args1.concat(args));
@@ -186,7 +186,7 @@ function partialUsingArguments(func, ...args1) {
 
     return function continueCurrying(...args2) {
       console.log(args2);
-      return curried.apply(this, args.concat(args2));
+      return currieds.apply(this, args.concat(args2));
     };
   };
 }
