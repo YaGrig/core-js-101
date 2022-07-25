@@ -36,7 +36,7 @@ function getRectangleArea(width, height) {
  *   0    => 0
  */
 function getCircleCircumference(radius) {
-  return 2 * 3.14159265359 * radius;
+  return (2 * 3.141592653589793 * radius);
 }
 
 /**
@@ -52,7 +52,10 @@ function getCircleCircumference(radius) {
  *  -3, 3  => 0
  */
 function getAverage(value1, value2) {
-  return (value1 + value2) / 2;
+  // eslint-disable-next-line no-undef
+  const sum = BigInt(value1) + BigInt(value2);
+  // eslint-disable-next-line no-undef
+  return sum / BigInt(2);
 }
 
 /**
@@ -70,8 +73,8 @@ function getAverage(value1, value2) {
  *   (0,0) (1,0)    => 1
  *   (-5,0) (10,-10) => 18.027756377319946
  */
-function getDistanceBetweenPoints(/* x1, y1, x2, y2 */) {
-  throw new Error('Not implemented');
+function getDistanceBetweenPoints(x1, y1, x2, y2) {
+  return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
 }
 
 /**
@@ -87,13 +90,7 @@ function getDistanceBetweenPoints(/* x1, y1, x2, y2 */) {
  *   5*x = 0         => 0
  */
 function getLinearEquationRoot(a, b) {
-  let result;
-  for (let i = 0; i < 10; i += 1) {
-    if (a * i === b) {
-      result = i;
-    }
-  }
-  return result;
+  return Math.abs(b) === b ? (-b) / a : Math.abs(b / a);
 }
 
 
@@ -115,8 +112,9 @@ function getLinearEquationRoot(a, b) {
  *   (0,1) (0,1)     => 0
  *   (0,1) (1,2)     => 0
  */
-function getAngleBetweenVectors(/* x1, y1, x2, y2 */) {
-  throw new Error('Not implemented');
+function getAngleBetweenVectors(x1, y1, x2, y2) {
+  return Math.acos((x1 * x2 + y1 * y2)
+  / ((Math.sqrt(x1 ** 2 + y1 ** 2)) * (Math.sqrt(x2 ** 2 + y2 ** 2))));
 }
 
 /**
@@ -207,9 +205,9 @@ function roundToPowerOfTen(num, pow) {
  *   16 => false
  *   17 => true
  */
-function isPrime(num) {
-  for (let i = 2, s = Math.sqrt(num); i <= s; i = +1) { if (num % i === 0) return false; }
-  return num > 1;
+function isPrime(n) {
+  for (let i = 2; i <= Math.sqrt(n); i += 1) { if (n % i === 0) return false; }
+  return true;
 }
 
 /**

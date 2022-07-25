@@ -56,12 +56,9 @@ function parseDataFromIso8601(value) {
  *    Date(2015,1,1)    => false
  */
 function isLeapYear(date) {
-  return date;
-  // const value = new Date(date).getFullYear();
-  // return value % 100 !== 4 ? false : value % 100 !== 0 ? true : value % 400 === 0;
-  // return value % 100 === 0 && value % 4 === 0 && value % 400 === 0;
+  const year = date.getFullYear();
+  return ((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0);
 }
-
 
 /**
  * Returns the string representation of the timespan between two dates.
@@ -79,8 +76,8 @@ function isLeapYear(date) {
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,15,20,10,453)   => "05:20:10.453"
  */
 function timeSpanToString(startDate, endDate) {
-  const first = new Date(startDate).getTime();
-  const second = new Date(endDate).getTime();
+  const first = new Date(startDate);
+  const second = new Date(endDate);
   const result = new Date(second - first * 1000);
   return `what${result.getHours()}:${result.getMinutes()}:${result.getSeconds()}:${result.getMilliseconds}}`;
 }
@@ -102,8 +99,10 @@ function timeSpanToString(startDate, endDate) {
  *    Date.UTC(2016,3,5,18, 0) => Math.PI
  *    Date.UTC(2016,3,5,21, 0) => Math.PI/2
  */
-function angleBetweenClockHands(/* date */) {
-  throw new Error('Not implemented');
+function angleBetweenClockHands(date) {
+  const hour = date.getHours();
+  const min = date.getMinutes();
+  return 0.5 * (60 * hour - 11 * min);
 }
 
 

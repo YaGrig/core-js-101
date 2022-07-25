@@ -1,78 +1,87 @@
-function evaluateTicTacToePosition(position) {
-  let result = [];
-  let diag = [];
-  function check(array) {
-    return (array[0] === array[1] && array[1] === array[2]);
-  }
-  for (let i = 0; i < position.length; i += 1) {
-    // eslint-disable-next-line no-loop-func
-    position[i].map((item) => result.push(item));
-    diag.push(position[i][i]);
-    if (check(result)) {
-      return result[0];
-    }
-    if (check(diag)) {
-      return diag[0];
-    }
-    diag = [];
-    result = [];
+// // // // function timeSpanToString(startDate, endDate) {
+// // // //   const first = startDate.getTime();
+// // // //   const second = endDate.getTime();
+// // // //   console.log(startDate, first, endDate, second);
+// // // //   const result = parseInt(Math.abs(second - first), 10);
+// // // //   const hours = Math.floor((result / (1000 * 60 * 60)) % 24);
+// // // //   const min = Math.abs((result / ((1000 * 60))) % 60);
+// // // //   const seconds = Math.abs((result / ((1000))) % 60);
+// // // //   // console.log('what', Math.floor(result / (1000 * 3600)));
+// // // //   return `${hours}:${min}:${seconds}:${result}`;
+// // // // }
+// // // async function chainPromises(array, action) {
+// // //   let ress = [];
+// // //   const result = await new Promise((res, rej) => {
+// // //     ress = array.map((item) => item.then((n) => n));
+// // //     res(console.log(ress));
+// // //   });
+// // //   console.log(result);
+// // //   return ress.reduce(action, 0);
+// // // }
+// // // const promises = [Promise.resolve(1), Promise.resolve(2), Promise.resolve(3)];
+// // // const p = chainPromises(promises, (a, b) => a + b);
+// // // console.log(p.then((res) => {
+// // //   console.log(res); // => 6
+// // // }));
 
-    for (let u = 0; u < position[i].length; u += 1) {
-      result.push(position[u][i]);
-
-      if (u + 1 === position[i].length) {
-        if (check(result)) {
-          return result[0];
-        }
-        result = [];
-      }
-    }
-  }
-  return undefined;
-}
-console.log(
-  evaluateTicTacToePosition([
-    ['', 'O', 'O'],
-    ['X', 'X', 'X'],
-    ['X', '', 'O'],
-  ]),
-);
-
-// function evaluateTicTacToePosition(position) {
-//   let resultVertic = [];
-//   let resultHorizontal = [];
-//   let diag = [];
-//   function check(array) {
-//     return (array[0] === array[1] && array[1] === array[2]);
-//   }
-//   for (let i = 2; i < position.length; i = -1) {
-//     diag.push(position[i][i]);
-//     if (check(diag)) {
-//       return diag[0];
-//     }
-//     diag = [];
-//   }
-//   for (let i = 0; i < position.length; i = +1) {
-//     diag.push(position[i][i]);
-//     if (check(diag)) {
-//       return diag[0];
-//     }
-//     diag = [];
-
-//     for (let u = 0; u < position[i].length; u = +1) {
-//       resultVertic.push(position[u][i]);
-//       resultHorizontal.push(position[i][u]);
-//       if (u + 1 === position[i].length) {
-//         if (check(resultVertic)) {
-//           return resultVertic[0];
-//         }
-//         if (check(resultHorizontal)) {
-//           return resultHorizontal[0];
-//         }
-//         resultVertic = [];
-//         resultHorizontal = [];
+// function isCreditCardNumber(ccn) {
+//   const string = ccn.toString();
+//   const lastdigit = string.substr(-1);
+//   let digits = string.substring(0, string.length - 1).split('');
+//   console.log(digits, digits.length);
+//   if (digits.length % 2 === 0) {
+//     digits = digits.map((item, index) => {
+//       if (index % 2 !== 0) {
+//         const itemA = (+item * 2).toString();
+//         if (itemA.length === 2) {
+//           return +itemA[0] + +itemA[1];
+//         } if (itemA.length !== 2) { return +itemA; }
 //       }
-//     }
+//       return +item;
+//     });
+//   } else {
+//     digits = digits.map((item, index) => {
+//       if (index % 2 === 0) {
+//         const itemA = (+item * 2).toString();
+//         if (itemA.length === 2) {
+//           return +itemA[0] + +itemA[1];
+//         } if (itemA.length !== 2) { return +itemA; }
+//       }
+//       return +item;
+//     });
 //   }
-//   return undefined;
 // }
+function isCreditCardNumber(ccn) {
+  const string = ccn.toString();
+  // const lastdigit = string.substr(-1);
+  let digits = string.substring(0, string.length).split('');
+  console.log(digits, digits.length);
+  digits = digits.map((item, index) => {
+    if (index % 2 !== 0) {
+      const itemA = (+item * 2).toString();
+      if (itemA.length === 2) {
+        return +itemA[0] + +itemA[1];
+      } if (itemA.length !== 2) { return +itemA; }
+    }
+    return +item;
+  });
+  console.log(digits);
+  digits = digits.reduce((a, b) => +a + +b);
+  console.log(digits);
+  return digits % 10 === 0;
+}
+console.log(isCreditCardNumber(4012888888881881));
+
+// function checkLuhn(cnn) {
+//   const nDigits = cnn.length;
+//   let sum = 0;
+//   const parity = (nDigits - 2) % 2;
+//   for (let i = 0; i < nDigits - 1; i++) {
+//     let digit = Number(cnn[i]);
+//     if (i % 2 === parity) { digit *= 2; }
+//     if (digit > 9) { digit -= 9; }
+//     sum += digit;
+//   }
+//   return (sum % 10 === 0);
+// }
+// console.log(checkLuhn(378734493671000));

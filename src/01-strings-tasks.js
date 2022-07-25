@@ -205,8 +205,29 @@ function extractEmails(str) {
  *             '└──────────┘\n'
  *
  */
-function getRectangleString(/* width, height */) {
-  throw new Error('Not implemented');
+function getRectangleString(width, height) {
+  let result = '';
+  const count = width * height;
+  for (let i = 1; i <= count; i += 1) {
+    if (i === 1) {
+      result += '┌';
+    } else if (i < width || (i > count - width + 1 && i !== count)) {
+      result += '─';
+    } else if (i === width) {
+      result += '┐\n';
+    } else if (i % width === 0 && i !== count) {
+      result += '│\n';
+    } else if (i === count - width + 1) {
+      result += '└';
+    } else if (i === count) {
+      result += '┘\n';
+    } else if ((i - 1) % width === 0) {
+      result += '│';
+    } else {
+      result += ' ';
+    }
+  }
+  return result;
 }
 
 
@@ -226,8 +247,9 @@ function getRectangleString(/* width, height */) {
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
-  throw new Error('Not implemented');
+function encodeToRot13(str) {
+  return str.replace(/[A-Z]/gi, (c) => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'[
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.indexOf(c)]);
 }
 
 /**
@@ -243,8 +265,8 @@ function encodeToRot13(/* str */) {
  *   isString('test') => true
  *   isString(new String('test')) => true
  */
-function isString(/* value */) {
-  throw new Error('Not implemented');
+function isString(value) {
+  return (typeof value === 'string' || value instanceof String);
 }
 
 
@@ -272,8 +294,12 @@ function isString(/* value */) {
  *   'Q♠' => 50
  *   'K♠' => 51
  */
-function getCardId(/* value */) {
-  throw new Error('Not implemented');
+function getCardId(value) {
+  const array = ['A♣', '2♣', '3♣', '4♣', '5♣', '6♣', '7♣', '8♣', '9♣', '10♣', 'J♣', 'Q♣', 'K♣',
+    'A♦', '2♦', '3♦', '4♦', '5♦', '6♦', '7♦', '8♦', '9♦', '10♦', 'J♦', 'Q♦', 'K♦',
+    'A♥', '2♥', '3♥', '4♥', '5♥', '6♥', '7♥', '8♥', '9♥', '10♥', 'J♥', 'Q♥', 'K♥',
+    'A♠', '2♠', '3♠', '4♠', '5♠', '6♠', '7♠', '8♠', '9♠', '10♠', 'J♠', 'Q♠', 'K♠'];
+  return array.indexOf(value);
 }
 
 
